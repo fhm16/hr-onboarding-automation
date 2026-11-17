@@ -1,0 +1,12 @@
+# Environment & Secrets
+.env
+*.local
+credentials.json
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs & Temporary Files
+*.log

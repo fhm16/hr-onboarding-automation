@@ -1,0 +1,295 @@
+{
+  "name": "HR Onboarding P6",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "New Joining Onboard",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_SHEET_GID",
+          "mode": "list",
+          "cachedResultName": "Form responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=YOUR_SHEET_GID"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        16
+      ],
+      "id": "34d43b21-0eb3-4156-aa0b-d59bf4c2765b",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Your Google Sheets Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c7271017-f342-4eeb-9d26-3e51e89b1e0f",
+              "name": "corporate_email",
+              "value": "={{ $json['Full Name (কর্মীর নাম)'].toLowerCase().replace(' ', '.') }}@yourcompany.com",
+              "type": "string"
+            },
+            {
+              "id": "e7ed8500-0a8e-4187-b45f-1608adf7412c",
+              "name": "temp_password",
+              "value": "Welcome@2026",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        16
+      ],
+      "id": "ff73b90e-f9b1-404d-a9bc-1505457dfc98",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['Personal Email (কর্মীর ব্যক্তিগত ইমেইল)'] }}",
+        "subject": "=Welcome to the Team, {{ $json['Full Name (কর্মীর নাম)'] }}! 🎉",
+        "emailType": "text",
+        "message": "=Hi {{ $json['Full Name (কর্মীর নাম)'] }},  Welcome to our team! We are thrilled to have you onboard as a {{ $json['Job Title'] }} in the {{ $json['Department'] }} department.  Here are your corporate account credentials to get started:  - Corporate Email: {{ $json.corporate_email }} - Temporary Password: {{ $json.temp_password }}  Please log in to your account and update your password on your first sign-in. Your official start date is {{ $json['Start Date (যোগদানের তারিখ)'] }}.  Best regards, HR Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        -176
+      ],
+      "id": "b7670b6f-56ed-4830-9d3c-24c5177a18d6",
+      "name": "Send a message",
+      "webhookId": "b65c4cb6-cfd7-4c71-817f-5342aa16e119",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_GMAIL_CREDENTIAL_ID",
+          "name": "Your Gmail Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pageId": {
+          "__rl": true,
+          "value": "https://www.notion.so/YOUR_NOTION_PARENT_PAGE_ID",
+          "mode": "url"
+        },
+        "title": "=Onboarding Page - {{ $('Edit Fields').item.json['Full Name (কর্মীর নাম)'] }}",
+        "blockUi": {
+          "blockValues": [
+            {
+              "type": "heading_2",
+              "textContent": "=🎉 Welcome to the Team, {{ $('Edit Fields').item.json['Full Name (কর্মীর নাম)'] }}!"
+            },
+            {
+              "textContent": "=We are thrilled to have you join us as a {{ $('Edit Fields').item.json['Job Title '] }} in the {{ $('Edit Fields').item.json['Department '] }}\ndepartment! Your official start date is {{ $('Edit Fields').item.json['Start Date (যোগদানের তারিখ)'] }}."
+            },
+            {
+              "type": "heading_3",
+              "textContent": "🔑 Account Credentials"
+            },
+            {
+              "textContent": "=• Corporate Email: {{ $('Edit Fields').item.json.corporate_email }} • Temporary Password: {{ $('Edit Fields').item.json.temp_password }}"
+            },
+            {
+              "type": "heading_3",
+              "textContent": "📋 First Week Onboarding Checklist"
+            },
+            {
+              "type": "to_do",
+              "textContent": "Log in to corporate email and change temporary password"
+            },
+            {
+              "type": "to_do",
+              "textContent": "Join company Slack channels (#general, #engineering)"
+            },
+            {
+              "type": "to_do",
+              "textContent": "Complete HR documentation & submit identity verification"
+            },
+            {
+              "type": "to_do",
+              "textContent": "Schedule 1-on-1 introductory meeting with Department Lead"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        672,
+        112
+      ],
+      "id": "fe128f0f-d0b7-4697-9c43-81be141e2e9f",
+      "name": "Create a page",
+      "credentials": {
+        "notionApi": {
+          "id": "YOUR_NOTION_CREDENTIAL_ID",
+          "name": "Your Notion API Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "=#general",
+          "mode": "name"
+        },
+        "text": "=🎉 *New Team Member Announcement!*\n\nPlease join us in welcoming *{{ $json['Full Name (কর্মীর নাম)'] }}* to the team! 🚀\n\n• *Role:* {{ $json['Job Title '] }}\n• *Department:* {{ $json['Department '] }}\n• *Start Date:* {{ $json['Start Date (যোগদানের তারিখ)'] }}\n• *Corporate Email:* {{ $json.corporate_email }}\n\nWe are thrilled to have you with us, *{{ $json['Full Name (কর্মীর নাম)'] }}*! Welcome aboard! 🥳",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        448,
+        16
+      ],
+      "id": "5a2c3a92-0c72-4fa7-a2fe-17a464bbe905",
+      "name": "Send a message1",
+      "webhookId": "9cb0f15f-0201-4101-9f05-c1a64b2c5359",
+      "credentials": {
+        "slackApi": {
+          "id": "YOUR_SLACK_CREDENTIAL_ID",
+          "name": "Your Slack API Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $json['Department '].toLowerCase().trim() }}",
+          "mode": "name"
+        },
+        "text": "=🎉 *New Team Member Announcement!*\n\nPlease join us in welcoming *{{ $json['Full Name (কর্মীর নাম)'] }}* to the team! 🚀\n\n• *Role:* {{ $json['Job Title '] }}\n• *Department:* {{ $json['Department '] }}\n• *Start Date:* {{ $json['Start Date (যোগদানের তারিখ)'] }}\n• *Corporate Email:* {{ $json.corporate_email }}\n\nWe are thrilled to have you with us, *{{ $json['Full Name (কর্মীর নাম)'] }}*! Welcome aboard! 🥳",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        448,
+        208
+      ],
+      "id": "3221d917-cca7-4c40-b006-7b6c8dc411f2",
+      "name": "Send a message2",
+      "webhookId": "8cbf5907-6281-4ff3-a4e6-4fd080f9ced3",
+      "credentials": {
+        "slackApi": {
+          "id": "YOUR_SLACK_CREDENTIAL_ID",
+          "name": "Your Slack API Account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Create a page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message2": {
+      "main": [
+        [
+          {
+            "node": "Create a page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "85e561af-ab0c-4544-a67e-2b88c68a70d9",
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": "YOUR_N8N_INSTANCE_ID"
+  },
+  "nodeGroups": [],
+  "id": "YOUR_WORKFLOW_ID",
+  "tags": []
+}

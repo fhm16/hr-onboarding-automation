@@ -1,0 +1,4 @@
+Timestamp,Full Name (কর্মীর নাম),Personal Email (কর্মীর ব্যক্তিগত ইমেইল),Department ,Job Title ,Start Date (যোগদানের তারিখ)
+22/10/2026 23:19:41,Rahat Ahmed,testemail@gmail.com,Engineering,Software Engineer,11/10/2026
+23/10/2026 16:35:10,Nehal Ahmed Nafi,nafi+apu22@gmail.com,Marketing,Assistant Marketing Head,14/07/2026
+23/10/2026 17:31:03,Assadullah Sarafat,assadullah24@gmail.com,Sales,Sales Executive,23/10/2026
