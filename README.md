@@ -1,4 +1,4 @@
-# 🚀 Automated HR Employee Onboarding & Provisioning Engine (n8n)
+# 🚀 Automated HR Employee Onboarding & Provisioning Engine
 
 <p align="left">
   <a href="https://youtu.be/NP1CPghGqaQ?si=KGya5yAW2VGcMfS6" target="_blank">
@@ -151,4 +151,3 @@ Have questions, feedback, or want to collaborate on workflow automation projects
 - **Author:** Ferdous Hasan Maruf
 - **Email:** [ferdoushasanmaruf16@gmail.com](mailto:ferdoushasanmaruf16@gmail.com)
 - **GitHub:** [@fhm16](https://github.com/fhm16)
-- **Project Demo:** [YouTube Walkthrough](https://youtu.be/NP1CPghGqaQ?si=KGya5yAW2VGcMfS6)
